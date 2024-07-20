@@ -12,89 +12,193 @@ import (
 func GetAllCategories(c *gin.Context) {
 	categories, err := service.GetAllCategories()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to fetch categories",
+			ResponseData: nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, categories)
+	response := model.Response{
+		ResponseCode: http.StatusOK,
+		ResponseDesc: "Request was successful",
+		ResponseData: map[string]interface{}{
+			"items": categories,
+		},
+		ResponseMeta: &model.ResponseMeta{
+			Page:         1,
+			PerPage:      10,
+			TotalPages:   1,
+			TotalRecords: len(categories),
+		},
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func GetCategoryByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		c.JSON(http.StatusBadRequest, model.Response{
+			ResponseCode: http.StatusBadRequest,
+			ResponseDesc: "Invalid ID",
+			ResponseData: nil,
+		})
 		return
 	}
 
 	category, err := service.GetCategoryByID(uint64(id))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to fetch category",
+			ResponseData: nil,
+		})
 		return
 	}
 
 	if category == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Category not found"})
+		c.JSON(http.StatusNotFound, model.Response{
+			ResponseCode: http.StatusNotFound,
+			ResponseDesc: "Category not found",
+			ResponseData: nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, category)
+	response := model.Response{
+		ResponseCode: http.StatusOK,
+		ResponseDesc: "Request was successful",
+		ResponseData: category,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func CreateCategory(c *gin.Context) {
 	var category model.Category
 	if err := c.ShouldBindJSON(&category); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, model.Response{
+			ResponseCode: http.StatusBadRequest,
+			ResponseDesc: err.Error(),
+			ResponseData: nil,
+		})
 		return
 	}
 
 	if err := service.CreateCategory(&category); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to create category",
+			ResponseData: nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusCreated, category)
+	response := model.Response{
+		ResponseCode: http.StatusCreated,
+		ResponseDesc: "Category created successfully",
+		ResponseData: category,
+	}
+
+	c.JSON(http.StatusCreated, response)
 }
 
 func UpdateCategory(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.Response{
+			ResponseCode: http.StatusBadRequest,
+			ResponseDesc: "Invalid ID",
+			ResponseData: nil,
+		})
+		return
+	}
+
 	var category model.Category
 	if err := c.ShouldBindJSON(&category); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, model.Response{
+			ResponseCode: http.StatusBadRequest,
+			ResponseDesc: err.Error(),
+			ResponseData: nil,
+		})
 		return
 	}
+
+	category.ID = uint64(id)
 
 	if err := service.UpdateCategory(&category); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to update category",
+			ResponseData: nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, category)
+	response := model.Response{
+		ResponseCode: http.StatusOK,
+		ResponseDesc: "Category Update successfully",
+		ResponseData: category,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func DeleteCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		c.JSON(http.StatusBadRequest, model.Response{
+			ResponseCode: http.StatusBadRequest,
+			ResponseDesc: "Invalid ID",
+			ResponseData: nil,
+		})
 		return
 	}
 
 	if err := service.DeleteCategory(uint64(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to delete category",
+			ResponseData: nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	response := model.Response{
+		ResponseCode: http.StatusOK,
+		ResponseDesc: "Category deleted successfully",
+		ResponseData: nil,
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func DeletePermanentlyCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		c.JSON(http.StatusBadRequest, model.Response{
+			ResponseCode: http.StatusBadRequest,
+			ResponseDesc: "Invalid ID",
+			ResponseData: nil,
+		})
 		return
 	}
 
 	if err := service.DeletePermanentlyCategory(uint64(id)); err != nil {
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to permanently delete category",
+			ResponseData: nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	response := model.Response{
+		ResponseCode: http.StatusOK,
+		ResponseDesc: "Category permanently deleted successfully",
+		ResponseData: nil,
+	}
+
+	c.JSON(http.StatusOK, response)
 }

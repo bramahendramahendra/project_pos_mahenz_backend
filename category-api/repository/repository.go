@@ -69,8 +69,18 @@ func CreateCategory(category *model.Category) error {
 }
 
 func UpdateCategory(category *model.Category) error {
-	query := "UPDATE categories SET category =?, updated_at = CURRENT_TIMESTAMP(3) WHERE id = ? AND deleted_at IS NULL"
+	query := "UPDATE categories SET category = ?, updated_at = CURRENT_TIMESTAMP(3) WHERE id = ? AND deleted_at IS NULL"
 	_, err := config.DB.Exec(query, category.Category, category.ID)
+	if err != nil {
+		return err
+	}
+
+	updatedCategory, err := GetCategoryByID(category.ID)
+	if err != nil {
+		return err
+	}
+
+	*category = *updatedCategory
 	return err
 }
 

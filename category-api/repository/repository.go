@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"project/category-api/model"
 	"project/config"
+	"time"
 )
 
 func GetAllCategories() ([]model.Category, error) {
@@ -40,9 +41,30 @@ func GetCategoryByID(id uint64) (*model.Category, error) {
 }
 
 func CreateCategory(category *model.Category) error {
-	query := "INSERT INTO categoris (category) VALUES (?)"
-	_, err := config.DB.Exec(query, category.Category)
-	return err
+	loc, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		return err
+	}
+
+	now := time.Now().In(loc)
+	formattedTime := now.Format("2006-01-02 15:04:05.000")
+	category.CreatedAt = formattedTime
+	category.UpdateAt = formattedTime
+
+	query := "INSERT INTO categories (category, created_at, updated_at) VALUES (?, ?, ?)"
+	result, err := config.DB.Exec(query, category.Category, category.CreatedAt, category.UpdateAt)
+	if err != nil {
+		return err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	category.ID = uint64(id)
+
+	return nil
 }
 
 func UpdateCategory(category *model.Category) error {

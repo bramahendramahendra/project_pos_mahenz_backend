@@ -21,6 +21,7 @@ func GetAllCategories() ([]model.Category, error) {
 		if err := rows.Scan(&category.ID, &category.Category, &category.CreatedAt, &category.UpdateAt); err != nil {
 			return nil, err
 		}
+
 		categories = append(categories, category)
 	}
 	return categories, nil
@@ -48,8 +49,8 @@ func CreateCategory(category *model.Category) error {
 
 	now := time.Now().In(loc)
 	formattedTime := now.Format("2006-01-02 15:04:05.000")
-	category.CreatedAt = formattedTime
-	category.UpdateAt = formattedTime
+	category.CreatedAt = &formattedTime
+	category.UpdateAt = &formattedTime
 
 	query := "INSERT INTO categories (category, created_at, updated_at) VALUES (?, ?, ?)"
 	result, err := config.DB.Exec(query, category.Category, category.CreatedAt, category.UpdateAt)
@@ -68,7 +69,7 @@ func CreateCategory(category *model.Category) error {
 }
 
 func UpdateCategory(category *model.Category) error {
-	query := "UPDATE categories SET category =?, updated_at CURRENT_TIMESTAMP(3) WHERE id = ? AND deleted_at IS NULL"
+	query := "UPDATE categories SET category =?, updated_at = CURRENT_TIMESTAMP(3) WHERE id = ? AND deleted_at IS NULL"
 	_, err := config.DB.Exec(query, category.Category, category.ID)
 	return err
 }

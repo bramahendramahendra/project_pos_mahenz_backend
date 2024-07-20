@@ -12,5 +12,5 @@ func main() {
 
 	router := gin.Default()
 	categoryRoutes.RegisterRoutes(router)
-	router.Run(":8081")
+	router.Run(":8080")
 }

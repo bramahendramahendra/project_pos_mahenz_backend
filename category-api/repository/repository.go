@@ -57,7 +57,7 @@ func DeleteCategory(id uint64) error {
 	return err
 }
 
-func DeletePermanently(id uint64) error {
+func DeletePermanentlyCategory(id uint64) error {
 	query := "DELETE FROM categories WHERE id = ?"
 	_, err := config.DB.Exec(query, id)
 	return err

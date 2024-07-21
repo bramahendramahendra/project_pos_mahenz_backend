@@ -69,19 +69,22 @@ func CreateCategory(category *model.Category) error {
 }
 
 func UpdateCategory(category *model.Category) error {
-	query := "UPDATE categories SET category = ?, updated_at = CURRENT_TIMESTAMP(3) WHERE id = ? AND deleted_at IS NULL"
-	_, err := config.DB.Exec(query, category.Category, category.ID)
+	loc, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
 		return err
 	}
 
-	updatedCategory, err := GetCategoryByID(category.ID)
+	now := time.Now().In(loc)
+	formattedTime := now.Format("2006-01-02 15:04:05.000")
+	category.UpdateAt = &formattedTime
+
+	query := "UPDATE categories SET category = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL"
+	_, err = config.DB.Exec(query, category.Category, category.UpdateAt, category.ID)
 	if err != nil {
 		return err
 	}
 
-	*category = *updatedCategory
-	return err
+	return nil
 }
 
 func DeleteCategory(id uint64) error {

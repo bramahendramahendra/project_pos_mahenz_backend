@@ -21,3 +21,7 @@ type ResponseMeta struct {
 	TotalPages   int `json:"total_pages"`
 	TotalRecords int `json:"total_records"`
 }
+
+type CategoryInput struct {
+	Category string `json:"category" binding:"required" example:"jeruk inpis"`
+}

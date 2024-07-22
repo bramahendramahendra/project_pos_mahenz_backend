@@ -9,6 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetAllCategories
+// @Summary Get all categories
+// @Description Get all categories
+// @Tags categories
+// @Accept json
+// @Product json
+// @Success 200 {object} model.Response
+// @Router /categories [get]
 func GetAllCategories(c *gin.Context) {
 	categories, err := service.GetAllCategories()
 	if err != nil {
@@ -37,6 +45,15 @@ func GetAllCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// GetCategoryByID
+// @Summary Get category by ID
+// @Description Get category by ID
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param id path int true "Category ID"
+// @Success 200 {object} model.Response
+// @Router /categories/{id} [get]
 func GetCategoryByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -76,6 +93,15 @@ func GetCategoryByID(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// CreateCategory
+// @Summary Create a new category
+// @Description Create a new category
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param category body model.CategoryInput true "Category"
+// @Success 201 {object} model.Response
+// @Router /categories [post]
 func CreateCategory(c *gin.Context) {
 	var category model.Category
 	if err := c.ShouldBindJSON(&category); err != nil {
@@ -105,6 +131,16 @@ func CreateCategory(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// UpdateCategory
+// @Summary Update a category
+// @Description Update a category
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param id path int true "Category ID"
+// @Param category body model.Category true "Category"
+// @Success 200 {object} model.Response
+// @Router /categories/{id} [put]
 func UpdateCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -146,6 +182,15 @@ func UpdateCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// DeleteCategory
+// @Summary Delete a category
+// @Description Delete a category
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param id  path int true "Category ID"
+// @Success 200 {object} model.Response
+// @Router /categories/{id} [delete]
 func DeleteCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -174,6 +219,15 @@ func DeleteCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// DeletePermanentlyCategory
+// @Summary Permanently delete a category
+// @Description Permanently delete a category
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param id path int true "Category ID"
+// @Success 200 {object} model.Response
+// @Router /categories/permanently/{id} [delete]
 func DeletePermanentlyCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -1,22 +1,9 @@
 basePath: /
 definitions:
-  model.Category:
-    properties:
-      category:
-        type: string
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: integer
-      updated_at:
-        type: string
-    type: object
   model.CategoryInput:
     properties:
       category:
-        example: jeruk inpis
+        example: Makanan
         type: string
     required:
     - category
@@ -44,10 +31,7 @@ definitions:
     type: object
 host: localhost:8080
 info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
+  contact: {}
   description: This is a sample server for managing Point of Sale.
   title: Point of Sale API
   version: "1.0"
@@ -142,7 +126,7 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/model.Category'
+          $ref: '#/definitions/model.CategoryInput'
       produces:
       - application/json
       responses:

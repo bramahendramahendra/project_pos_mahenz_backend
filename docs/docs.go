@@ -9,11 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -160,7 +156,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Category"
+                            "$ref": "#/definitions/model.CategoryInput"
                         }
                     }
                 ],
@@ -206,26 +202,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "model.Category": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "model.CategoryInput": {
             "type": "object",
             "required": [
@@ -234,7 +210,7 @@ const docTemplate = `{
             "properties": {
                 "category": {
                     "type": "string",
-                    "example": "jeruk inpis"
+                    "example": "Makanan"
                 }
             }
         },
@@ -283,6 +259,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "This is a sample server for managing Point of Sale.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

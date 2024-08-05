@@ -23,5 +23,5 @@ type ResponseMeta struct {
 }
 
 type CategoryInput struct {
-	Category string `json:"category" binding:"required" example:"jeruk inpis"`
+	Category string `json:"category" binding:"required" example:"Makanan"`
 }

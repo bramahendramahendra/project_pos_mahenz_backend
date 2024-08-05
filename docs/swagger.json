@@ -3,11 +3,7 @@
     "info": {
         "description": "This is a sample server for managing Point of Sale.",
         "title": "Point of Sale API",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
+        "contact": {},
         "version": "1.0"
     },
     "host": "localhost:8080",
@@ -154,7 +150,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Category"
+                            "$ref": "#/definitions/model.CategoryInput"
                         }
                     }
                 ],
@@ -200,26 +196,6 @@
         }
     },
     "definitions": {
-        "model.Category": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "model.CategoryInput": {
             "type": "object",
             "required": [
@@ -228,7 +204,7 @@
             "properties": {
                 "category": {
                     "type": "string",
-                    "example": "jeruk inpis"
+                    "example": "Makanan"
                 }
             }
         },

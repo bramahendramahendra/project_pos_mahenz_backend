@@ -25,7 +25,7 @@ go get gorm.io/driver/mysql
 
 ## Installation Swagger
 ```bash
-go install github.com/swaggo/swag/cmd/swag@latest
-$ go get github.com/swaggo/gin-swagger
-$ go get github.com/swaggo/files
+go get github.com/swaggo/swag/cmd/swag@latest
+go get github.com/swaggo/gin-swagger
+go get github.com/swaggo/files
 ```

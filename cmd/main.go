@@ -16,10 +16,6 @@ import (
 // @description This is a sample server for managing Point of Sale.
 // @host localhost:8080
 // @BasePath /
-
-// @contact.name API Support
-// @contact.url http://www.swagger.io/support
-// @contact.email support@swagger.io
 func main() {
 	config.InitDB()
 

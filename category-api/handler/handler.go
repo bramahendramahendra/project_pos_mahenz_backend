@@ -138,7 +138,7 @@ func CreateCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "Category ID"
-// @Param category body model.Category true "Category"
+// @Param category body model.CategoryInput true "Category"
 // @Success 200 {object} model.Response
 // @Router /categories/{id} [put]
 func UpdateCategory(c *gin.Context) {

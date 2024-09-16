@@ -29,3 +29,14 @@ go get github.com/swaggo/swag/cmd/swag@latest
 go get github.com/swaggo/gin-swagger
 go get github.com/swaggo/files
 ```
+
+
+## Running GO
+
+Driver MySQL untuk GORM
+```bash
+ go run cmd/main.go
+ http://localhost:8080/swagger/index.html
+```
+
+swag init -g cmd/main.go

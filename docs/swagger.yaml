@@ -158,4 +158,17 @@ paths:
       summary: Permanently delete a category
       tags:
       - categories
+  /categories/with-deleted:
+    get:
+      consumes:
+      - application/json
+      description: Get all categories including deleted
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get all categories including deleted
+      tags:
+      - categories
 swagger: "2.0"

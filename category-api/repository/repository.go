@@ -98,3 +98,45 @@ func DeletePermanentlyCategory(id uint64) error {
 	_, err := config.DB.Exec(query, id)
 	return err
 }
+
+// CheckDuplicateCategoryName checks if a category name already exists.
+func CheckDuplicateCategoryName(categoryName string) (bool, error) {
+	query := "SELECT COUNT(1) FROM categories WHERE category = ? AND deleted_at IS NULL"
+	var count int
+	err := config.DB.QueryRow(query, categoryName).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
+// CheckDuplicateCategoryNameForUpdate checks if a category name already exists, excluding the current category.
+func CheckDuplicateCategoryNameForUpdate(categoryName string, categoryID uint64) (bool, error) {
+	query := "SELECT COUNT(1) FROM categories WHERE category = ? AND id != ? AND deleted_at IS NULL"
+	var count int
+	err := config.DB.QueryRow(query, categoryName, categoryID).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
+func GetAllCategoriesWithDeleted() ([]model.Category, error) {
+	query := "SELECT id, category, created_at, updated_at, deleted_at FROM categories"
+	rows, err := config.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	categories := []model.Category{}
+	for rows.Next() {
+		var category model.Category
+		if err := rows.Scan(&category.ID, &category.Category, &category.CreatedAt, &category.UpdateAt, &category.DeletedAt); err != nil {
+			return nil, err
+		}
+
+		categories = append(categories, category)
+	}
+	return categories, nil
+}

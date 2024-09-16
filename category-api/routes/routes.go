@@ -15,5 +15,6 @@ func RegisterRoutes(router *gin.Engine) {
 		r.PUT("/:id", handler.UpdateCategory)
 		r.DELETE("/:id", handler.DeleteCategory)
 		r.DELETE("/permanently/:id", handler.DeletePermanentlyCategory)
+		r.GET("/with-deleted", handler.GetAllCategoriesWithDeleted)
 	}
 }

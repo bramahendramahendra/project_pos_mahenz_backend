@@ -99,6 +99,26 @@ const docTemplate = `{
                 }
             }
         },
+        "/categories/with-deleted": {
+            "get": {
+                "description": "Get all categories including deleted",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Get all categories including deleted",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/categories/{id}": {
             "get": {
                 "description": "Get category by ID",

@@ -114,6 +114,15 @@ func CreateCategory(c *gin.Context) {
 	}
 
 	if err := service.CreateCategory(&category); err != nil {
+		if err.Error() == "category name already exists" {
+			c.JSON(http.StatusConflict, model.Response{
+				ResponseCode: http.StatusConflict,
+				ResponseDesc: "Category name already exists",
+				ResponseData: nil,
+			})
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, model.Response{
 			ResponseCode: http.StatusInternalServerError,
 			ResponseDesc: "Failed to create category",
@@ -162,9 +171,36 @@ func UpdateCategory(c *gin.Context) {
 		return
 	}
 
-	category.ID = uint64(id)
+	existingCategory, err := service.GetCategoryByID(uint64(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to fetch category",
+			ResponseData: nil,
+		})
+		return
+	}
 
+	if existingCategory.DeletedAt != nil {
+		c.JSON(http.StatusForbidden, model.Response{
+			ResponseCode: http.StatusForbidden,
+			ResponseDesc: "Category has been deleted and cannot be updated",
+			ResponseData: nil,
+		})
+		return
+	}
+
+	category.ID = uint64(id)
 	if err := service.UpdateCategory(&category); err != nil {
+		if err.Error() == "category name already exists" {
+			c.JSON(http.StatusConflict, model.Response{
+				ResponseCode: http.StatusConflict,
+				ResponseDesc: "Category name already exists",
+				ResponseData: nil,
+			})
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, model.Response{
 			ResponseCode: http.StatusInternalServerError,
 			ResponseDesc: "Failed to update category",
@@ -178,7 +214,6 @@ func UpdateCategory(c *gin.Context) {
 		ResponseDesc: "Category Update successfully",
 		ResponseData: category,
 	}
-
 	c.JSON(http.StatusOK, response)
 }
 
@@ -252,6 +287,36 @@ func DeletePermanentlyCategory(c *gin.Context) {
 		ResponseCode: http.StatusOK,
 		ResponseDesc: "Category permanently deleted successfully",
 		ResponseData: nil,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// GetAllCategoriesWithDeleted
+// @Summary Get all categories including deleted
+// @Description Get all categories including deleted
+// @Tags categories
+// @Accept json
+// @Product json
+// @Success 200 {object} model.Response
+// @Router /categories/with-deleted [get]
+func GetAllCategoriesWithDeleted(c *gin.Context) {
+	categories, err := service.GetAllCategoriesWithDeleted()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.Response{
+			ResponseCode: http.StatusInternalServerError,
+			ResponseDesc: "Failed to fetch categories",
+			ResponseData: nil,
+		})
+		return
+	}
+
+	response := model.Response{
+		ResponseCode: http.StatusOK,
+		ResponseDesc: "Request was successful",
+		ResponseData: map[string]interface{}{
+			"items": categories,
+		},
 	}
 
 	c.JSON(http.StatusOK, response)

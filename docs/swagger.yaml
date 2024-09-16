@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  model.CategoryInput:
+  project_category-api_model.CategoryInput:
     properties:
       category:
         example: Makanan
@@ -8,7 +8,7 @@ definitions:
     required:
     - category
     type: object
-  model.Response:
+  project_category-api_model.Response:
     properties:
       responseCode:
         type: integer
@@ -16,9 +16,42 @@ definitions:
       responseDesc:
         type: string
       responseMeta:
-        $ref: '#/definitions/model.ResponseMeta'
+        $ref: '#/definitions/project_category-api_model.ResponseMeta'
     type: object
-  model.ResponseMeta:
+  project_category-api_model.ResponseMeta:
+    properties:
+      page:
+        type: integer
+      per_page:
+        type: integer
+      total_pages:
+        type: integer
+      total_records:
+        type: integer
+    type: object
+  project_product-api_model.ProductInput:
+    properties:
+      id_category:
+        example: 1
+        type: integer
+      product:
+        example: Chitato
+        type: string
+    required:
+    - id_category
+    - product
+    type: object
+  project_product-api_model.Response:
+    properties:
+      responseCode:
+        type: integer
+      responseData: {}
+      responseDesc:
+        type: string
+      responseMeta:
+        $ref: '#/definitions/project_product-api_model.ResponseMeta'
+    type: object
+  project_product-api_model.ResponseMeta:
     properties:
       page:
         type: integer
@@ -45,7 +78,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Get all categories
       tags:
       - categories
@@ -59,14 +92,14 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/model.CategoryInput'
+          $ref: '#/definitions/project_category-api_model.CategoryInput'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Create a new category
       tags:
       - categories
@@ -87,7 +120,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Delete a category
       tags:
       - categories
@@ -107,7 +140,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Get category by ID
       tags:
       - categories
@@ -126,14 +159,14 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/model.CategoryInput'
+          $ref: '#/definitions/project_category-api_model.CategoryInput'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Update a category
       tags:
       - categories
@@ -154,7 +187,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Permanently delete a category
       tags:
       - categories
@@ -167,8 +200,164 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Response'
+            $ref: '#/definitions/project_category-api_model.Response'
       summary: Get all categories including deleted
       tags:
       - categories
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get all products
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Get all products
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/project_product-api_model.ProductInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Create a new product
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Delete a product
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: Get product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Get product by ID
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: Update a product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/project_product-api_model.ProductInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Update a product
+      tags:
+      - products
+  /products/category/{id_category}:
+    get:
+      consumes:
+      - application/json
+      description: Get products by category ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id_category
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Get products by category ID
+      tags:
+      - products
+  /products/permanently/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Permanently delete a product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Permanently delete a product
+      tags:
+      - products
+  /products/with-deleted:
+    get:
+      consumes:
+      - application/json
+      description: Get all products including deleted
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project_product-api_model.Response'
+      summary: Get all products including deleted
+      tags:
+      - products
 swagger: "2.0"

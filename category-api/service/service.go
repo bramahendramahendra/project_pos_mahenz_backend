@@ -14,7 +14,6 @@ func GetCategoryByID(id uint64) (*model.Category, error) {
 	return repository.GetCategoryByID(id)
 }
 func CreateCategory(category *model.Category) error {
-	// Check for duplicate category name
 	isDuplicate, err := repository.CheckDuplicateCategoryName(*category.Category)
 	if err != nil {
 		return err
@@ -27,7 +26,6 @@ func CreateCategory(category *model.Category) error {
 }
 
 func UpdateCategory(category *model.Category) error {
-	// Check for duplicate category name during update
 	isDuplicate, err := repository.CheckDuplicateCategoryNameForUpdate(*category.Category, category.ID)
 	if err != nil {
 		return err

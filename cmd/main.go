@@ -3,6 +3,7 @@ package main
 import (
 	categoryRoutes "project/category-api/routes"
 	"project/config"
+	productRoutes "project/product-api/routes"
 
 	_ "project/docs"
 
@@ -21,6 +22,7 @@ func main() {
 
 	router := gin.Default()
 	categoryRoutes.RegisterRoutes(router)
+	productRoutes.RegisterRoutes(router)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

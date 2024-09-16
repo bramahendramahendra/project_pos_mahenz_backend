@@ -29,7 +29,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
                         }
                     }
                 }
@@ -53,7 +53,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CategoryInput"
+                            "$ref": "#/definitions/project_category-api_model.CategoryInput"
                         }
                     }
                 ],
@@ -61,7 +61,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
                         }
                     }
                 }
@@ -93,7 +93,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
                         }
                     }
                 }
@@ -113,7 +113,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
                         }
                     }
                 }
@@ -145,7 +145,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
                         }
                     }
                 }
@@ -176,7 +176,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CategoryInput"
+                            "$ref": "#/definitions/project_category-api_model.CategoryInput"
                         }
                     }
                 ],
@@ -184,7 +184,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
                         }
                     }
                 }
@@ -214,7 +214,244 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Response"
+                            "$ref": "#/definitions/project_category-api_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "description": "Get all products",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get all products",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create a new product",
+                "parameters": [
+                    {
+                        "description": "Product",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.ProductInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/category/{id_category}": {
+            "get": {
+                "description": "Get products by category ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get products by category ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Category ID",
+                        "name": "id_category",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/permanently/{id}": {
+            "delete": {
+                "description": "Permanently delete a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Permanently delete a product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/with-deleted": {
+            "get": {
+                "description": "Get all products including deleted",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get all products including deleted",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "description": "Get product by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get product by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Update a product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Product",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.ProductInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Delete a product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/project_product-api_model.Response"
                         }
                     }
                 }
@@ -222,7 +459,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "model.CategoryInput": {
+        "project_category-api_model.CategoryInput": {
             "type": "object",
             "required": [
                 "category"
@@ -234,7 +471,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Response": {
+        "project_category-api_model.Response": {
             "type": "object",
             "properties": {
                 "responseCode": {
@@ -245,11 +482,60 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "responseMeta": {
-                    "$ref": "#/definitions/model.ResponseMeta"
+                    "$ref": "#/definitions/project_category-api_model.ResponseMeta"
                 }
             }
         },
-        "model.ResponseMeta": {
+        "project_category-api_model.ResponseMeta": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "per_page": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
+                },
+                "total_records": {
+                    "type": "integer"
+                }
+            }
+        },
+        "project_product-api_model.ProductInput": {
+            "type": "object",
+            "required": [
+                "id_category",
+                "product"
+            ],
+            "properties": {
+                "id_category": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "product": {
+                    "type": "string",
+                    "example": "Chitato"
+                }
+            }
+        },
+        "project_product-api_model.Response": {
+            "type": "object",
+            "properties": {
+                "responseCode": {
+                    "type": "integer"
+                },
+                "responseData": {},
+                "responseDesc": {
+                    "type": "string"
+                },
+                "responseMeta": {
+                    "$ref": "#/definitions/project_product-api_model.ResponseMeta"
+                }
+            }
+        },
+        "project_product-api_model.ResponseMeta": {
             "type": "object",
             "properties": {
                 "page": {

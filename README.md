@@ -33,10 +33,14 @@ go get github.com/swaggo/files
 
 ## Running GO
 
-Driver MySQL untuk GORM
 ```bash
  go run cmd/main.go
  http://localhost:8080/swagger/index.html
 ```
 
+## Rstart Swagger
+
+```bash
 swag init -g cmd/main.go
+swag init -g cmd/main.go --parseDependency
+```
